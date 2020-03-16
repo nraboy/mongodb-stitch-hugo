@@ -9,7 +9,7 @@ function cleanTask() {
 
 function generateTask() {
     return src("./hugo", { read: true })
-        .pipe(shell(["hugo --config <%= file.path %>/config.toml --themesDir <%= file.path %>/themes/"]));
+        .pipe(shell(["hugo --config ./hugo/config.toml --themesDir ./hugo/themes/"]));
 }
 
 function deployTask() {
