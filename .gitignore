@@ -1,0 +1,7 @@
+node_modules
+resources
+hosting/files
+
+package-lock.json
+
+.DS_Store*
