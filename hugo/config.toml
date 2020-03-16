@@ -3,4 +3,4 @@ languageCode = "en-us"
 title = "My New Hugo Site"
 theme = "ananke"
 
-publishDir = "hosting/files"
+publishDir = "../hosting/files"

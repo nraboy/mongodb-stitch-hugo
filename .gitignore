@@ -1,5 +1,6 @@
 node_modules
 resources
+public
 hosting/files
 
 package-lock.json

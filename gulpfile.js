@@ -9,7 +9,10 @@ function cleanTask() {
 
 function generateTask() {
     return src("./hugo", { read: true })
-        .pipe(shell(["hugo --config <%= file.path %>/config.toml --contentDir <%= file.path %>/content/ --themesDir <%= file.path %>/themes/"]));
+        .pipe(shell([
+            `cd <%= file.path %> && hugo --baseURL ${process.env.STITCH_BASE_URL}`
+        ]));
+        //.pipe(shell(["hugo --config <%= file.path %>/config.toml --contentDir <%= file.path %>/content/ --themesDir <%= file.path %>/themes/"]));
 }
 
 function deployTask() {
