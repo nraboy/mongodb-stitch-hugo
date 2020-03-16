@@ -19,7 +19,7 @@ function deployTask() {
     return src("./hosting", { read: true })
         .pipe(shell([
             `stitch-cli login --private-api-key=${process.env.STITCH_PRIVATE_API_KEY} --api-key=${process.env.STITCH_API_KEY} --yes`,
-            `stitch-cli import --include-hosting --yes`
+            `stitch-cli import --app-id=${process.env.STITCH_APP_ID} --include-hosting --yes`
         ]));
 }
 
