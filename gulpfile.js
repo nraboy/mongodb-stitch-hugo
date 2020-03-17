@@ -2,6 +2,8 @@ const { src, series } = require("gulp");
 const clean = require("gulp-clean");
 const shell = require("gulp-shell");
 
+const stitch = require("./stitch.json");
+
 function cleanTask() {
     return src(["./hosting/files", "./public"], { read: false, allowEmpty: true })
         .pipe(clean());
@@ -10,16 +12,15 @@ function cleanTask() {
 function generateTask() {
     return src("./hugo", { read: true })
         .pipe(shell([
-            `cd <%= file.path %> && hugo --baseURL ${process.env.STITCH_BASE_URL}`
+            `cd <%= file.path %> && hugo --baseURL https://${stitch.hosting.app_default_domain}`
         ]));
-        //.pipe(shell(["hugo --config <%= file.path %>/config.toml --contentDir <%= file.path %>/content/ --themesDir <%= file.path %>/themes/"]));
 }
 
 function deployTask() {
     return src("./hosting", { read: true })
         .pipe(shell([
             `stitch-cli login --private-api-key=${process.env.STITCH_PRIVATE_API_KEY} --api-key=${process.env.STITCH_API_KEY} --yes`,
-            `stitch-cli import --app-id=${process.env.STITCH_APP_ID} --include-hosting --yes`
+            `stitch-cli import --include-hosting --yes`
         ]));
 }
 
