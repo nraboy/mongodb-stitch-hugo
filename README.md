@@ -4,7 +4,7 @@
 
 Static websites are becoming more popular due to their performance and how inexpensive it is to host them at scale. Popular generators include Hugo, Jekyll, 11ty, because of how easy it is to write and maintain in a format like Markdown and convert to HTML.
 
-In this tutorial we're going to see how to create a static hosted website using [Hugo](https://www.gohugo.io) and automatically deploy changes to Stitch through a continuos deployment pipeline consisting of Git and [Travis CI](https://travis-ci.org/).
+In this tutorial, we're going to see how to create a static hosted website using [Hugo](https://www.gohugo.io) and automatically deploy changes to Stitch through a continuous deployment pipeline consisting of Git and [Travis CI](https://travis-ci.org/).
 
 ## The Requirements for the Tutorial
 
@@ -24,7 +24,7 @@ MongoDB Atlas and Stitch have forever free tiers which are more than enough when
 
 ## Configuring the MongoDB Stitch CLI for Static Website Hosting
 
-There are many ways to get started with the hosting features of MongoDB Stitch, but for this example we're going to be exploring the CLI because it will have the most compatibility between continuous deployment tools.
+There are many ways to get started with the hosting features of MongoDB Stitch, but for this example, we're going to be exploring the CLI because it will have the most compatibility between continuous deployment tools.
 
 From the command line, execute the following:
 
@@ -34,7 +34,7 @@ npm install -g mongodb-stitch-cli
 
 The above command will install the [Stitch CLI](https://docs.mongodb.com/stitch/deploy/stitch-cli-reference/) if you haven't already installed it previously.
 
-After installing the CLI, it won't offer much value until you sign into your account. This is done through a public and secret key combination that is configured within Atlas.
+After installing the CLI, it won't offer much value until you sign in to your account. This is done through a public and secret key combination that is configured within Atlas.
 
 ### Generating a Public and Secret Key in MongoDB Atlas
 
@@ -126,7 +126,7 @@ When it comes to working with Hugo, you'll want to be within the **hugo** direct
 echo 'theme = "ananke"' >> config.toml
 ```
 
-Our Hugo project, content wise, will be quite empty because it is a new project. Let's get a new post in there so we have something to show. From the command line, execute the following:
+Our Hugo project, content-wise, will be quite empty because it is a new project. Let's get a new post in there so we have something to show. From the command line, execute the following:
 
 ```bash
 hugo new posts/my-first-post.md
@@ -146,7 +146,7 @@ The above command will build your static content and serve it at http://localhos
 
 As seen in the previous steps, it isn't difficult to build a Hugo project or deploy static assets to Stitch. However, you generally wouldn't want to manually run multiple commands any time you wanted to deploy. Instead, a build script or deployment script might make more sense.
 
-Two popular task runner technologies include Gulp and Grunt. For this example we're going to use [Gulp](https://gulpjs.com/) for building and deploying our website to Stitch.
+Two popular task runner technologies include Gulp and Grunt. For this example, we're going to use [Gulp](https://gulpjs.com/) for building and deploying our website to Stitch.
 
 At the root of your Stitch project create a **gulpfile.js** file and then execute the following commands:
 
@@ -159,7 +159,7 @@ npm install gulp-shell --save-dev
 npm install mongodb-stitch-cli --save-dev
 ```
 
-The above commands will create a new **package.json** file at the root of your project and then install various packages which will help towards building and deploying the project.
+The above commands will create a new **package.json** file at the root of your project and then install various packages that will help towards building and deploying the project.
 
 For example, we'll be using `gulp-clean` for cleaning our project of old files before building and we'll be using `gulp-shell` to interact with the command line from JavaScript. We're adding the `mongodb-stitch-cli` package because we want the future deployment services to have access to it locally within a project rather than globally.
 
@@ -186,9 +186,9 @@ exports.build = series(cleanTask, generateTask);
 exports.deploy = series(cleanTask, generateTask, deployTask);
 ```
 
-The above code is incomplete, however, you can see that we're importing each of the packages that we downloaded and are referencing the **stitch.json** file that exists at the root of our project. We're doing that because it contains configuration information that we'll use.
+The above code is incomplete, however, you can see that we're importing each of the packages that we downloaded and is referencing the **stitch.json** file that exists at the root of our project. We're doing that because it contains configuration information that we'll use.
 
-We have three task functions, and four possible tasks which make use of the functions. Let's look at the `cleanTask` function first:
+We have three task functions and four possible tasks which make use of the functions. Let's look at the `cleanTask` function first:
 
 ```javascript
 function cleanTask() {
@@ -197,7 +197,7 @@ function cleanTask() {
 }
 ```
 
-When the `cleanTask` function is ran, the entire **hosting/files** directory will be removed. This will be done without reading the contents of the directory and it will be done without errors even if the directory doesn't exist.
+When the `cleanTask` function is run, the entire **hosting/files** directory will be removed. This will be done without reading the contents of the directory and it will be done without errors even if the directory doesn't exist.
 
 When it comes to the `generateTask` function, we might have the following:
 
@@ -210,7 +210,7 @@ function generateTask() {
 }
 ```
 
-The above function will look at the **hugo** directory within our project and pipe the content to our shell. Within the shell command we are navigating into the **hugo** directory and running the Hugo build command within that directory. We are specifying the URL that exists in our **stitch.json** file as the base URL so our links don't get messed up during the build.
+The above function will look at the **hugo** directory within our project and pipe the content to our shell. Within the shell command, we are navigating into the **hugo** directory and running the Hugo build command within that directory. We are specifying the URL that exists in our **stitch.json** file as the base URL so our links don't get messed up during the build.
 
 The `generateTask` isn't quite ready for prime time yet. If we were to run it, everything would work, but the output would be sent to the wrong place. We can fix this by changing the Hugo configuration.
 
@@ -234,7 +234,7 @@ function deployTask() {
 }
 ```
 
-First we're taking the entire **hosting** directory that exists at the root of our project and we're piping it to the shell. The first command signs in with the public and secret API keys. Notice the use of environment variables for this shell command. If you want to run this task locally, make sure both environment variables are set on your computer with the appropriate data. We'll be doing the same when it comes to Travis CI.
+First, we're taking the entire **hosting** directory that exists at the root of our project and we're piping it to the shell. The first command signs in with the public and secret API keys. Notice the use of environment variables for this shell command. If you want to run this task locally, make sure both environment variables are set on your computer with the appropriate data. We'll be doing the same when it comes to Travis CI.
 
 After the sign in happens, we import the files to Stitch.
 
@@ -252,15 +252,15 @@ If everything up until now has been successful, we have a Hugo project that will
 
 We want this to be an automated process every time we push our changes to GitHub, GitLab, or similar.
 
-For this example we'll be using GitHub and Travis CI, but with some adjustments, the same rules apply to other platforms and services as well.
+For this example, we'll be using GitHub and Travis CI, but with some adjustments, the same rules apply to other platforms and services as well.
 
-Create a new repository on GitHub and then sign into your Travis CI account. You'll want to activate this project on Travis CI so events start happening when you push your code.
+Create a new repository on GitHub and then sign in to your Travis CI account. You'll want to activate this project on Travis CI so events start happening when you push your code.
 
 Within Travis CI, open the settings for the particular project and navigate to the **Environment Variables** section.
 
 ![](travis-ci-env-variables.jpg "")
 
-The keys and values should look similar to what we've done a few times already. You'll want to take your public and secret API keys and add them to this section of Travis CI. Remember, the Gulp task looks for these variables so that way they aren't hard coded and sent to GitHub.
+The keys and values should look similar to what we've done a few times already. You'll want to take your public and secret API keys and add them to this section of Travis CI. Remember, the Gulp task looks for these variables so that way they aren't hardcoded and sent to GitHub.
 
 Once the project is active and the variables are set on Travis CI, we'll need to create a configuration file to be sent with our Git pushes.
 
@@ -286,7 +286,7 @@ deploy:
         branch: master
 ```
 
-The above configuration does a few things. First we're saying this runner should have everything necessary to run Node.js 12.X code, hence the Gulp tasks that we wish to run. This runner likely won't have Hugo available, so we need to download and install it. Remember, our Gulp task will try to run Hugo, but that doesn't mean it exists on the machine we're using.
+The above configuration does a few things. First, we're saying this runner should have everything necessary to run Node.js 12.X code, hence the Gulp tasks that we wish to run. This runner likely won't have Hugo available, so we need to download and install it. Remember, our Gulp task will try to run Hugo, but that doesn't mean it exists on the machine we're using.
 
 After installing our runner dependencies, NPM will install the packages that exist in our **package.json** file. When these packages are available, the build task will run followed by the deploy task.
 
